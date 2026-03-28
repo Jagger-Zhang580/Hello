@@ -1,0 +1,40 @@
+name: 跑仓库代码的CI/CD演示
+
+on:
+  workflow_dispatch: # 手动触发
+  push:              # 代码push时自动触发
+    branches: [ main ]
+
+jobs:
+  run-code:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: 拉取仓库代码
+        uses: actions/checkout@v4
+
+      - name: 准备Python环境
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: 安装依赖（如果有的话）
+        run: |
+          python -m pip install --upgrade pip
+          # 如果有requirements.txt，就加一行：pip install -r requirements.txt
+
+      - name: 真正跑仓库里的代码
+        run: |
+          python hello.py  # 这里就是执行你仓库里的脚本！
+
+      - name: 记录运行结果
+        run: |
+          echo "代码运行时间: $(date)" >> run-log.txt
+          echo "✅ 仓库代码执行成功" >> run-log.txt
+
+      - name: 提交结果到仓库
+        uses: EndBug/add-and-commit@v9
+        with:
+          message: "CI自动执行仓库代码并记录结果"
