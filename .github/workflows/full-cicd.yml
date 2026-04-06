@@ -18,9 +18,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
     
     - name: Super-Linter
-      uses: super-linter/super-linter@v7
+      uses: super-linter/super-linter/slim@v7
       env:
         DEFAULT_BRANCH: main
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -29,6 +31,7 @@ jobs:
         VALIDATE_JSON: true
         VALIDATE_YAML: true
         VALIDATE_DOCKERFILE_HADOLINT: true
+        VALIDATE_GITHUB_ACTIONS: true
         FILTER_REGEX_EXCLUDE: '(package-lock\.json|node_modules/)'
     
     - name: Security Scan
