@@ -1,0 +1,18 @@
+{
+  "name": "hello",
+  "version": "1.0.0",
+  "main": "hello.js",
+  "scripts": {
+    "test": "node --test",
+    "lint": "eslint .",
+    "build": "echo \"Build complete\""
+  },
+  "keywords": [],
+  "author": "Jagger-Zhang580",
+  "license": "ISC",
+  "type": "module",
+  "description": "Hello World calculator app",
+  "devDependencies": {
+    "eslint": "^9.39.4"
+  }
+}
