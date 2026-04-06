@@ -1,0 +1,33 @@
+name: Debug Workflow
+
+on:
+  workflow_dispatch:
+    inputs:
+      log-level:
+        description: 'Log level'
+        required: false
+        default: 'debug'
+
+env:
+  ACTIONS_STEP_DEBUG: true
+  ACTIONS_RUNNER_DEBUG: true
+
+jobs:
+  debug:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Debug information
+      run: |
+        echo "Runner OS: $RUNNER_OS"
+        echo "Runner Arch: $RUNNER_ARCH"
+        echo "Workspace: $GITHUB_WORKSPACE"
+        echo "Event Name: $GITHUB_EVENT_NAME"
+        echo "Ref: $GITHUB_REF"
+        echo "SHA: $GITHUB_SHA"
+    
+    - name: Check disk space
+      run: df -h
+    
+    - name: Check memory
+      run: free -h
