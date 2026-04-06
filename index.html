@@ -55,8 +55,13 @@
     btn.addEventListener("click", () => {
       const x = Number(a.value);
       const y = Number(b.value);
+      if (isNaN(x) || isNaN(y)) {
+        result.textContent = "结果：请输入有效数字";
+        output.textContent = "Hello World 🌍";
+        return;
+      }
       const sum = x + y;
-      result.textContent = "结果 ：" + sum;
+      result.textContent = "结果：" + sum;
       output.textContent = "Hello World - 你刚计算了 " + x + " + " + y + " = " + sum;
     });
   </script>
