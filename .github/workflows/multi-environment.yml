@@ -1,0 +1,42 @@
+name: Multi-Environment Deployment
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+      - feature/*
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    environment: 
+      name: ${{ github.ref == 'refs/heads/main' && 'production' || github.ref == 'refs/heads/develop' && 'staging' || 'development' }}
+    
+    strategy:
+      matrix:
+        include:
+          - env: production
+            if: github.ref == 'refs/heads/main'
+            url: https://api.production.com
+          - env: staging
+            if: github.ref == 'refs/heads/develop'
+            url: https://api.staging.com
+          - env: development
+            if: startsWith(github.ref, 'refs/heads/feature/')
+            url: https://api.dev.com
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+    
+    - name: Setup environment variables
+      run: |
+        echo "API_URL=${{ matrix.url }}" >> $GITHUB_ENV
+        echo "NODE_ENV=${{ matrix.env }}" >> $GITHUB_ENV
+    
+    - name: Deploy
+      run: |
+        echo "Deploying to ${{ matrix.env }} environment"
+        # 部署逻辑
