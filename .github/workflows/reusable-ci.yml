@@ -1,0 +1,43 @@
+name: Reusable CI Template
+
+on:
+  workflow_call:
+    inputs:
+      node-version:
+        description: 'Node.js version'
+        required: false
+        default: '20'
+        type: string
+      run-tests:
+        description: 'Run tests'
+        required: false
+        default: true
+        type: boolean
+      run-build:
+        description: 'Run build'
+        required: false
+        default: true
+        type: boolean
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Setup Node.js ${{ inputs.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ inputs.node-version }}
+    
+    - name: Install dependencies
+      run: npm ci
+    
+    - name: Run tests
+      if: ${{ inputs.run-tests }}
+      run: npm test
+    
+    - name: Build
+      if: ${{ inputs.run-build }}
+      run: npm run build
